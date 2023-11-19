@@ -71,7 +71,8 @@ agent = initialize_agent(
 # List of URLs to crawl
 crawl_urls = [
     'https://dictionary.ksaa.gov.sa/',
-    # ... (other URLs)
+    'https://dictionary.ksaa.gov.sa/Search/3',
+  
 ]
 
 # Crawl the specified URLs and save the output to a JSON lines file
@@ -79,14 +80,14 @@ adv.crawl(crawl_urls, 'output_file.jl', follow_links=True)
 crawl_df = pd.read_json('output_file.jl', lines=True)
 
 # Extract relevant columns from the crawled data
-crawl_df = crawl_df[['body_text', 'url', 'title', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'og:title']]
+crawl_df = crawl_df[['body_text', 'url', 'title', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6']]
 
 # Load crawled data into a DataFrameLoader
 loader = DataFrameLoader(crawl_df, page_content_column="body_text")
 docs = loader.load()
 
 # Split documents into chunks for processing
-text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=10)
+text_splitter = CharacterTextSplitter(chunk_size=500, chunk_overlap=10)
 documents = text_splitter.split_documents(docs)
 
 # Embed text using OpenAI embeddings
