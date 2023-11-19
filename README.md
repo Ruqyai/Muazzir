@@ -1,4 +1,5 @@
-
+  ![Alt text](./static/images/2.png)
+  ![Alt text](./static/images/1.png)
   <div class="about">
     <!-- Application description -->
     <h1>ماهو تطبيق مُؤزِّر؟</h1>
