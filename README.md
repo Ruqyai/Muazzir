@@ -108,3 +108,13 @@
       </ul>
   </ul>
   </div>
+
+#
+  
+  قم بتضمين هذا الملف وأضف المفاتيح المطلوبة للتشغيل 
+
+```
+<!-- Rename the file to [.env] and add your keys -->
+OPENAI_API_KEY="Add your key of OpenAI here"
+API_KEY="Add your key of Riyadh Dictionary here"
+```
