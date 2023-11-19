@@ -1,0 +1,14 @@
+version: '3'
+services:
+  app:
+    container_name: flask
+    build:
+      context: .  
+    ports:
+      - "8000:8000"
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - API_KEY=${API_KEY}
+    volumes:
+      - .env:/app/.env 
+

@@ -1,4 +1,45 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <!-- Set the document title in Arabic -->
+  <title>مُؤزِّر</title>
+  <!-- Link to external stylesheet -->
+  <link rel="stylesheet" href="../static/styles.css">
+</head>
+<body>
+  <div class="container">
+    <!-- Header section with application title and navigation links -->
+    <div class="title">
+      <h1>مُؤزِّر</h1>
+      <nav>
+        <!-- Navigation links to different sections of the application -->
+        <a href="./">مُؤزِّر الزاحف</a>
+        <a href="./connect_api">مُؤزِّر الرابط</a>
+      </nav>
+    </div>
+    
+    <!-- Main chat container for displaying messages -->
+    <div class="chat-container" id="chat-container">
+      <!-- Initial bot message providing an introduction to the application -->
+      <div class="message bot-message">
+        <!-- Bot introduction message in Arabic -->
+        مرحبًا، أنا مُؤزِّر، وهذه نسخة مُؤزِّر الزاحف. مهمتي هنا هي الزحف لموقع معجم الرياض وبعض المعاجم والمواقع الأخرى، ...
+        <br>
+        <!-- Bot prompt to ask the user how it can assist -->
+        كيف يمكنني مُؤَازَرَتك اليوم؟
+      </div>
+    </div>
+    
+    <!-- Input container for user to type and send messages -->
+    <div class="input-container">
+      <!-- Input field for typing messages -->
+      <input type="text" class="input-field" id="message-input" placeholder="اكتب سؤالك هنا...">
+      <!-- Button to send user's message -->
+      <button class="send-button" onclick="sendMessage()">أرسل</button>
+    </div>
+  </div>
 
+  <!-- About section providing information about the application -->
   <div class="about">
     <!-- Application description -->
     <h1>ماهو تطبيق مُؤزِّر؟</h1>
@@ -45,7 +86,8 @@
             <ul>
                 <li>التفاعل مع النموذج اللغوي وطلب مزيد من المعلومات أو توضيحات، وربما بعض الصور التوضيحية أيضًا، فذلك يعتمد على النموذج الذي يتم ربطه به.</li>
             </ul>
-        </li>      
+        </li>
+      
         <li>معالجة بيانات متقدمة:
             <ul>
                 <li>قدرة التطبيق على معالجة البيانات بشكل متقدم بمجرد جمعها، مما يسهم في استخراج العلاقات الدلالية بين الكلمات وتحليل المعلومات بشكل فعّال.</li>
@@ -86,7 +128,7 @@
     <h2>التقنيات المستخدمة</h2>
     <ul>
       <li>استخدام إطار العمل LangChain المخصص لبناء تطبيقات تتفاعل مع النماذج اللغوية الضخمة، وهو مكتبة مفتوحة المصدر.</li>
-     <li>
+      <li>
         ChromaDB، قاعدة بيانات متجهة مفتوحة المصدر.
       </li>
       <li>استخدام واجهة برمجة التطبيقات (API) الخاصة بـ OpenAI كنموذج لغوي ضخم، ويمكن استبداله لاحقًا بنموذج لغوي ضخم مفتوح المصدر ينشر في السحابة.</li>
@@ -102,8 +144,58 @@
       <ul>
         <li>
          مهندسة ذكاء اصطناعي تعمل على تطوير منتجات وحلول ذكاء اصطناعي مبتكرة. وهي معترف بها كخبيرة مطوري Google في التعلم الآلي، وبطلة Google Cloud Innovator، ومرشدة متخصصة في تعلم الآلة في Google Accelerator for Startups الشرق الأوسط وشمال إفريقيا، وسفيرة WTM.
+
         تمتد خبرة رقيا عبر جميع مراحل مشاريع الذكاء الاصطناعي المستندة إلى السحابة، بما في ذلك جمع البيانات وإنشاء خطوط الأنابيب ومعالجة البيانات وتحليلها والتدريب النموذجي والنشر. وفي أحدث دور لها في شركة جديدة، حولت تركيزها نحو تطوير المنتجات المتطورة التي تستغل قوة التقنيات الناشئة. تشمل هذه التقنيات الذكاء الإصطناعي التوليدي ونماذج اللغات الكبيرة (LLMs)، ومعالجة اللغات الطبيعية (NLP)، وأطر العمل مختلفة لإنشاء تطبيقات الذكاء الاصطناعي التوليدي.
         </li>
       </ul>
-  </ul>
+    </ul>
   </div>
+
+  <!-- JavaScript code for handling user messages and server interaction -->
+  <script>
+    // Function to send user messages to the server
+    function sendMessage() {
+      var messageInput = document.getElementById("message-input");
+      var message = messageInput.value;
+      messageInput.value = "";
+      var chatContainer = document.getElementById("chat-container");
+
+      // Display user message in the chat
+      var userMessage = document.createElement("div");
+      userMessage.className = "message user-message";
+      userMessage.textContent = message;
+      chatContainer.appendChild(userMessage);
+
+      // Send user message to the server using fetch API
+      fetch("/chat", {
+        method: 'POST',
+        body: JSON.stringify({ message: message }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      .then(response => response.json())
+      .then(data => {
+        // Display bot response in the chat
+        var botMessage = document.createElement("div");
+        botMessage.className = "message bot-message";
+        botMessage.textContent = data.response;
+        chatContainer.appendChild(botMessage);
+
+        // Scroll to the bottom of the chat for the latest messages
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+    }
+
+    // Allow sending message on Enter key press
+    document.getElementById("message-input").addEventListener("keydown", function (event) {
+      if (event.key === "Enter") {
+        sendMessage();
+      }
+    });
+  </script>
+</body>
+</html>

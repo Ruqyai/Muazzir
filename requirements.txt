@@ -1,0 +1,10 @@
+openai
+tiktoken
+langchain
+advertools
+chromadb
+flask
+pandas
+uvicorn
+gunicorn
+python-dotenv
